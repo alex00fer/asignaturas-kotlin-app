@@ -15,4 +15,6 @@ interface AlumnoDao {
     @Insert (onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(vararg alumno: Alumno)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(join: AlumnoAsignaturaCrossRef)
 }

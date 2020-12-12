@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
+import com.example.tareafragmentosalejandrofernandez.database.Alumno
+import com.example.tareafragmentosalejandrofernandez.database.DataRepository
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -15,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     var frameTop: FrameLayout? = null
     var frameBottom: FrameLayout? = null
     var listaAlumnosFragment: ListaAlumnosFragment? = null
+
+    var dataRepository = DataRepository(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,13 @@ class MainActivity : AppCompatActivity() {
         jsonLoad.load(jsonText)
         var datos = jsonLoad.data
         //Toast.makeText(this, jsonLoad.data.alumnos[0].nombre, Toast.LENGTH_SHORT).show()
+
+        // POPULATE
+        // insertar alumnos
+        for (al in datos.alumnos)
+            dataRepository.insert(Alumno(al.codigo, al.nombre, al.apellido))
+        for (al in datos.profesores)
+            dataRepository.insert(Alumno(al.codigo, al.nombre, al.apellido))
 
 
         // SPINNER
