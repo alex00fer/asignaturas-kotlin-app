@@ -8,18 +8,24 @@
     tools:context=".MainActivity">
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerAsignatura"
         android:layout_width="match_parent"
         android:layout_height="41dp" />
 
     <FrameLayout
+        android:id="@+id/frameTop"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <FrameLayout
+        android:id="@+id/frameBottom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3">
