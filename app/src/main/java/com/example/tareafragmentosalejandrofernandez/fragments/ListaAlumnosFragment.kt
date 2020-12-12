@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tareafragmentosalejandrofernandez.R
 import com.example.tareafragmentosalejandrofernandez.adapters.AlumnoDataAdapter
-import com.example.tareafragmentosalejandrofernandez.model.AlumnoData
+import com.example.tareafragmentosalejandrofernandez.models.AlumnoData
 
 class ListaAlumnosFragment : Fragment() {
 
@@ -30,6 +30,8 @@ class ListaAlumnosFragment : Fragment() {
         val recyclerViewLista: RecyclerView = v.findViewById<View>(R.id.recyclerviewListaAlumnos) as RecyclerView
 
         var items = ArrayList<AlumnoData>()
+
+        // test data
         for (i in 1..20){
             items.add(AlumnoData(i.toString(), i.toString()))
         }

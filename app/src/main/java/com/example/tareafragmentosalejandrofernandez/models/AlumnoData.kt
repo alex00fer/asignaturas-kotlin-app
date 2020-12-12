@@ -1,4 +1,4 @@
-package com.example.tareafragmentosalejandrofernandez.model
+package com.example.tareafragmentosalejandrofernandez.models
 
 data class AlumnoData (
     var nombre: String = "",

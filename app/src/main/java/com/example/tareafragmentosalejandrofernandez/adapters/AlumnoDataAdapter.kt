@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tareafragmentosalejandrofernandez.R
-import com.example.tareafragmentosalejandrofernandez.model.AlumnoData
+import com.example.tareafragmentosalejandrofernandez.models.AlumnoData
 
 
 class AlumnoDataAdapter(var items: ArrayList<AlumnoData>, private val listener: (AlumnoData) -> Unit) : RecyclerView.Adapter<AlumnoDataAdapter.ViewHolder>() {
