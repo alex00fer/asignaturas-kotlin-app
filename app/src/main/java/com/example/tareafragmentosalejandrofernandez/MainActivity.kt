@@ -6,10 +6,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
-import com.example.tareafragmentosalejandrofernandez.database.Alumno
-import com.example.tareafragmentosalejandrofernandez.database.Asignatura
-import com.example.tareafragmentosalejandrofernandez.database.DataRepository
-import com.example.tareafragmentosalejandrofernandez.database.Profesor
+import com.example.tareafragmentosalejandrofernandez.database.*
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -59,11 +56,13 @@ class MainActivity : AppCompatActivity() {
             dataRepository.insert(Asignatura(asignatura))
 
 
-
+        // GET
+        var alumnosData = dataRepository.getAlumnosConAsignaturas()
 
         // SPINNER
         var spinner = findViewById<Spinner>(R.id.spinnerAsignatura)
-        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, datos.asignaturas)
+        var asignaturas = dataRepository.getAsignaturas()
+        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, asignaturas)
         spinner.adapter = adapterSpinner
 
         val activityContext = this;
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             // In portrait
             //Toast.makeText(this, "PORTRAIT", Toast.LENGTH_SHORT).show()
 
-            listaAlumnosFragment = ListaAlumnosFragment.newInstance(datos.alumnos)
+            listaAlumnosFragment = ListaAlumnosFragment.newInstance(alumnosData as ArrayList<AlumnoConAsignaturas>)
             listaAlumnosFragment!!.activityListener = activityListener
 
             val fragmentManager = supportFragmentManager
@@ -96,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             fragmentTransaction.add(R.id.frameBottom, listaAlumnosFragment!!)
             fragmentTransaction.commit()
 
-
+            //Toast.makeText(this, dataRepository.getAlumnos()[0].apellido, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -107,11 +106,13 @@ class MainActivity : AppCompatActivity() {
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.frameLayoutFragment, fichaFragment!!)
+            fragmentTransaction.replace(R.id.frameTop, fichaFragment!!)
             fragmentTransaction.commit()
             fragmentManager.executePendingTransactions()
             segundoFragmentActivo = true
         }
-        fichaFragment!!.updateData(listaFragment!!.itemSeleccionado)*/
+        fichaFragment!!.updateData(listaFragment!!.itemSeleccionado)
+
+         */
     }
 }

@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tareafragmentosalejandrofernandez.R
+import com.example.tareafragmentosalejandrofernandez.database.AlumnoConAsignaturas
 import com.example.tareafragmentosalejandrofernandez.models.AlumnoData
 
 
-class AlumnoDataAdapter(var items: ArrayList<AlumnoData>, private val listener: (AlumnoData) -> Unit) : RecyclerView.Adapter<AlumnoDataAdapter.ViewHolder>() {
+class AlumnoDataAdapter(var items: ArrayList<AlumnoConAsignaturas>, private val listener: (AlumnoConAsignaturas) -> Unit) : RecyclerView.Adapter<AlumnoDataAdapter.ViewHolder>() {
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlumnoDataAdapter.ViewHolder {
@@ -37,10 +38,10 @@ class AlumnoDataAdapter(var items: ArrayList<AlumnoData>, private val listener: 
         val textViewNombre = itemView.findViewById<TextView>(R.id.textViewListItemA)
         val textViewApellido = itemView.findViewById<TextView>(R.id.textViewListItemB)
 
-        fun bindItems(alumno: AlumnoData) {
+        fun bindItems(alumno: AlumnoConAsignaturas) {
 
-            textViewNombre.text = alumno.nombre
-            textViewApellido.text = alumno.apellido
+            textViewNombre.text = alumno.alumno.nombre
+            textViewApellido.text = alumno.alumno.apellido
         }
     }
 }

@@ -38,6 +38,22 @@ class DataRepository(context: Context) {
         return -1
     }
 
+    fun getAlumnos(): List<Alumno>{
+        return GetAlumnosTask(alumnoDao!!).execute().get()
+    }
+
+    fun getAlumnosConAsignaturas(): List<AlumnoConAsignaturas>{
+        return GetAlumnosAsignaturasTask(alumnoDao!!).execute().get()
+    }
+
+    fun getAsignaturas(): List<String>{
+        var asgs = GetAsignaturasTask(asignaturaDao!!).execute().get()
+        var result = ArrayList<String>()
+        for (a in asgs)
+            result.add(a.asignatura)
+        return result.toList()
+    }
+
     private class InsertAlumnoAsyncTask(private val dao: AlumnoDao) : AsyncTask<Alumno, Void, Int>() {
 
         override fun doInBackground(vararg params: Alumno?): Int {
@@ -95,6 +111,24 @@ class DataRepository(context: Context) {
             catch (exception: Exception){
                 return -1
             }
+        }
+    }
+
+    private class GetAlumnosTask(private val dao: AlumnoDao) :AsyncTask<Void, Void, List<Alumno>>(){
+        override fun doInBackground(vararg params: Void?): List<Alumno> {
+            return dao.getAll()
+        }
+    }
+
+    private class GetAsignaturasTask(private val dao: AsignaturaDao) :AsyncTask<Void, Void, List<Asignatura>>(){
+        override fun doInBackground(vararg params: Void?): List<Asignatura> {
+            return dao.getAll()
+        }
+    }
+
+    private class GetAlumnosAsignaturasTask(private val dao: AlumnoDao) :AsyncTask<Void, Void, List<AlumnoConAsignaturas>>(){
+        override fun doInBackground(vararg params: Void?): List<AlumnoConAsignaturas> {
+            return dao.getAlumnosConAsignaturas()
         }
     }
 

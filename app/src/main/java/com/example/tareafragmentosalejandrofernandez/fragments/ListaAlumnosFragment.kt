@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tareafragmentosalejandrofernandez.R
 import com.example.tareafragmentosalejandrofernandez.adapters.AlumnoDataAdapter
+import com.example.tareafragmentosalejandrofernandez.database.AlumnoConAsignaturas
 import com.example.tareafragmentosalejandrofernandez.models.AlumnoData
 
-class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoData>) : Fragment() {
+class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoConAsignaturas>) : Fragment() {
 
     var activityListener: View.OnClickListener? = null
-    var itemSeleccionado: AlumnoData? = null
+    var itemSeleccionado: AlumnoConAsignaturas? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,7 @@ class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoData>) : Fragment() {
     }
     companion object {
         @JvmStatic
-        fun newInstance(alumnos: ArrayList<AlumnoData>) =
+        fun newInstance(alumnos: ArrayList<AlumnoConAsignaturas>) =
             ListaAlumnosFragment(alumnos).apply {}
     }
 }
