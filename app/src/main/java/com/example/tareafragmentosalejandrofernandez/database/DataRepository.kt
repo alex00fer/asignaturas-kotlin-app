@@ -10,22 +10,30 @@ class DataRepository(context: Context) {
     private val asignaturaDao: AsignaturaDao? = AppDatabase.getInstance(context)?.asignaturaDao()
 
     fun insert(alumno: Alumno):Int {
-        if (alumnoDao != null){
+        if (alumnoDao != null) {
             return InsertAlumnoAsyncTask(alumnoDao).execute(alumno).get()
         }
         return -1
     }
 
     fun insert(prefesor: Profesor):Int {
-        if (profesorDao != null){
+        if (profesorDao != null) {
             return InsertProfesorAsyncTask(profesorDao).execute(prefesor).get()
         }
         return -1
     }
 
     fun insert(asignatura: Asignatura):Int {
-        if (asignaturaDao != null){
+        if (asignaturaDao != null) {
             return InsertAsignaturaAsyncTask(asignaturaDao).execute(asignatura).get()
+        }
+        return -1
+    }
+
+    fun relate(codigoAlumno: Int, asignatura: String):Int {
+        if (alumnoDao != null) {
+            return InsertCrossRefAsyncTask(alumnoDao).execute(
+                AlumnoAsignaturaCrossRef(codigoAlumno, asignatura)).get()
         }
         return -1
     }

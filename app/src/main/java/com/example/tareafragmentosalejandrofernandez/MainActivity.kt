@@ -7,7 +7,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
 import com.example.tareafragmentosalejandrofernandez.database.Alumno
+import com.example.tareafragmentosalejandrofernandez.database.Asignatura
 import com.example.tareafragmentosalejandrofernandez.database.DataRepository
+import com.example.tareafragmentosalejandrofernandez.database.Profesor
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -18,11 +20,12 @@ class MainActivity : AppCompatActivity() {
     var frameBottom: FrameLayout? = null
     var listaAlumnosFragment: ListaAlumnosFragment? = null
 
-    var dataRepository = DataRepository(this)
-
+    lateinit var dataRepository: DataRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        dataRepository = DataRepository(this)
 
         frameTop = findViewById(R.id.frameTop)
         frameBottom = findViewById(R.id.frameBottom)
@@ -38,12 +41,24 @@ class MainActivity : AppCompatActivity() {
         var datos = jsonLoad.data
         //Toast.makeText(this, jsonLoad.data.alumnos[0].nombre, Toast.LENGTH_SHORT).show()
 
+
+
         // POPULATE
         // insertar alumnos
-        for (al in datos.alumnos)
+        for (al in datos.alumnos) {
             dataRepository.insert(Alumno(al.codigo, al.nombre, al.apellido))
-        for (al in datos.profesores)
-            dataRepository.insert(Alumno(al.codigo, al.nombre, al.apellido))
+            //Toast.makeText(this, al.Asignaturas.size, Toast.LENGTH_LONG).show()
+            for (asignatura in al.Asignaturas)
+                dataRepository.relate(al.codigo, asignatura)
+        }
+        // insertar profesores
+        for (pr in datos.profesores)
+            dataRepository.insert(Profesor(pr.codigo, pr.nombre, pr.apellido, pr.asignatura))
+        // insertar asignaturas
+        for (asignatura in datos.asignaturas)
+            dataRepository.insert(Asignatura(asignatura))
+
+
 
 
         // SPINNER
@@ -57,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(activityContext, "Nothing selected", Toast.LENGTH_LONG).show()
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Toast.makeText(activityContext, spinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
+                //Toast.makeText(activityContext, spinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
             }
         }
 
