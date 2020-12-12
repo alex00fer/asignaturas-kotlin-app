@@ -74,11 +74,17 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 //Toast.makeText(activityContext, spinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
-                var resultProfesor = dataRepository.getProfesor(spinner.selectedItem.toString())
+
+                val selected = spinner.selectedItem.toString()
+
+                var resultProfesor = dataRepository.getProfesor(selected)
                 if (resultProfesor != null &&resultProfesor.size > 0)
                     profesorFragment!!.updateData(resultProfesor[0])
                 else
                     profesorFragment!!.updateData(null)
+
+                var resultAlumnos = dataRepository.getAlumnosConAsignatura(selected)
+                listaAlumnosFragment!!.updateData(resultAlumnos as ArrayList<AlumnoConAsignaturas>)
 
             }
         }
