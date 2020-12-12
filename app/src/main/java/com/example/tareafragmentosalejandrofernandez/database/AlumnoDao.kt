@@ -12,6 +12,10 @@ interface AlumnoDao {
     @Query("SELECT * FROM alumno")
     fun getAlumnosConAsignaturas(): List<AlumnoConAsignaturas>
 
+    @Transaction
+    @Query("SELECT * FROM alumno JOIN alumnoasignaturacrossref WHERE alumnoasignaturacrossref.asignatura LIKE :asignatura")
+    fun getAlumnosConAsignatura(asignatura: String): List<AlumnoConAsignaturas>
+
     @Insert (onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(vararg alumno: Alumno)
 

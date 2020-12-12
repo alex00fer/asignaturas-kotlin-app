@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tareafragmentosalejandrofernandez.R
 import com.example.tareafragmentosalejandrofernandez.adapters.AlumnoDataAdapter
 import com.example.tareafragmentosalejandrofernandez.database.AlumnoConAsignaturas
-import com.example.tareafragmentosalejandrofernandez.models.AlumnoData
 
 class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoConAsignaturas>) : Fragment() {
 
     var activityListener: View.OnClickListener? = null
     var itemSeleccionado: AlumnoConAsignaturas? = null
+    var recyclerViewLista: RecyclerView? = null
+    var recyclerAdapter: AlumnoDataAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,7 @@ class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoConAsignaturas>) : Fragm
         // Inflate the layout for this fragment
         val v= inflater.inflate(R.layout.fragment_lista_alumnos, container, false)
 
-        val recyclerViewLista: RecyclerView = v.findViewById<View>(R.id.recyclerviewListaAlumnos) as RecyclerView
+        recyclerViewLista = v.findViewById<View>(R.id.recyclerviewListaAlumnos) as RecyclerView
 
         var items = alumnos//ArrayList<AlumnoData>()
 
@@ -37,18 +38,27 @@ class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoConAsignaturas>) : Fragm
         //    items.add(AlumnoData(i.toString(), i.toString()))
         //}
 
-        val adapter = AlumnoDataAdapter(items) { item ->
+        recyclerAdapter = AlumnoDataAdapter(items) { item ->
             itemSeleccionado = item
             if (activityListener != null) {
                 activityListener!!.onClick(view)
             }
         }
 
-        recyclerViewLista.setAdapter(adapter)
-        recyclerViewLista.setLayoutManager(LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false))
+        recyclerViewLista!!.setAdapter(recyclerAdapter)
+        recyclerViewLista!!.setLayoutManager(LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false))
 
         return v
     }
+
+    fun updateData(items: ArrayList<AlumnoConAsignaturas>?) {
+        if (items!=null) {
+            alumnos = items
+            recyclerAdapter!!.items = items
+            recyclerAdapter!!.notifyDataSetChanged()
+        }
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(alumnos: ArrayList<AlumnoConAsignaturas>) =

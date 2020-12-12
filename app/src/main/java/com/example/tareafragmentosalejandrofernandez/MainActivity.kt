@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
 import com.example.tareafragmentosalejandrofernandez.database.*
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
+import com.example.tareafragmentosalejandrofernandez.fragments.ProfesorFragment
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     var frameTop: FrameLayout? = null
     var frameBottom: FrameLayout? = null
     var listaAlumnosFragment: ListaAlumnosFragment? = null
+    var profesorFragment: ProfesorFragment? = null
 
     lateinit var dataRepository: DataRepository
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,9 +74,19 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 //Toast.makeText(activityContext, spinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
+                var resultProfesor = dataRepository.getProfesor(spinner.selectedItem.toString())
+                if (resultProfesor != null &&resultProfesor.size > 0)
+                    profesorFragment!!.updateData(resultProfesor[0])
+                else
+                    profesorFragment!!.updateData(null)
+
             }
         }
 
+        // Preparar fragmentos
+        listaAlumnosFragment = ListaAlumnosFragment.newInstance(alumnosData as ArrayList<AlumnoConAsignaturas>)
+        listaAlumnosFragment!!.activityListener = activityListener
+        profesorFragment = ProfesorFragment.newInstance()
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -85,14 +97,13 @@ class MainActivity : AppCompatActivity() {
         } else {
 
             // In portrait
-            //Toast.makeText(this, "PORTRAIT", Toast.LENGTH_SHORT).show()
 
-            listaAlumnosFragment = ListaAlumnosFragment.newInstance(alumnosData as ArrayList<AlumnoConAsignaturas>)
-            listaAlumnosFragment!!.activityListener = activityListener
+            //Toast.makeText(this, "PORTRAIT", Toast.LENGTH_SHORT).show()
 
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.add(R.id.frameBottom, listaAlumnosFragment!!)
+            fragmentTransaction.add(R.id.frameTop, profesorFragment!!)
             fragmentTransaction.commit()
 
             //Toast.makeText(this, dataRepository.getAlumnos()[0].apellido, Toast.LENGTH_LONG).show()
