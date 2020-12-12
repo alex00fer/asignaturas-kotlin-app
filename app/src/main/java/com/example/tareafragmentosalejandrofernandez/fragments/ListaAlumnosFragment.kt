@@ -11,7 +11,7 @@ import com.example.tareafragmentosalejandrofernandez.R
 import com.example.tareafragmentosalejandrofernandez.adapters.AlumnoDataAdapter
 import com.example.tareafragmentosalejandrofernandez.models.AlumnoData
 
-class ListaAlumnosFragment : Fragment() {
+class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoData>) : Fragment() {
 
     var activityListener: View.OnClickListener? = null
     var itemSeleccionado: AlumnoData? = null
@@ -29,12 +29,12 @@ class ListaAlumnosFragment : Fragment() {
 
         val recyclerViewLista: RecyclerView = v.findViewById<View>(R.id.recyclerviewListaAlumnos) as RecyclerView
 
-        var items = ArrayList<AlumnoData>()
+        var items = alumnos//ArrayList<AlumnoData>()
 
         // test data
-        for (i in 1..20){
-            items.add(AlumnoData(i.toString(), i.toString()))
-        }
+        //for (i in 1..20){
+        //    items.add(AlumnoData(i.toString(), i.toString()))
+        //}
 
         val adapter = AlumnoDataAdapter(items) { item ->
             itemSeleccionado = item
@@ -50,7 +50,7 @@ class ListaAlumnosFragment : Fragment() {
     }
     companion object {
         @JvmStatic
-        fun newInstance() =
-            ListaAlumnosFragment().apply {}
+        fun newInstance(alumnos: ArrayList<AlumnoData>) =
+            ListaAlumnosFragment(alumnos).apply {}
     }
 }

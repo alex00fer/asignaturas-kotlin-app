@@ -34,9 +34,13 @@ class AlumnoDataAdapter(var items: ArrayList<AlumnoData>, private val listener: 
     //the class is hodling the list view
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindItems(cliente: AlumnoData) {
-            val textViewNombre = itemView.findViewById<TextView>(R.id.textViewListItemA)
-            textViewNombre.text = cliente.nombre
+        val textViewNombre = itemView.findViewById<TextView>(R.id.textViewListItemA)
+        val textViewApellido = itemView.findViewById<TextView>(R.id.textViewListItemB)
+
+        fun bindItems(alumno: AlumnoData) {
+
+            textViewNombre.text = alumno.nombre
+            textViewApellido.text = alumno.apellido
         }
     }
 }

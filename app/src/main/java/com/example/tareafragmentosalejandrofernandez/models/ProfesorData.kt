@@ -1,8 +1,8 @@
 package com.example.tareafragmentosalejandrofernandez.models
 
-data class AlumnoData (
+data class ProfesorData (
     var codigo: Int,
     var nombre: String,
     var apellido: String,
-    var asignaturas: ArrayList<String>
+    var asignatura: String
 )

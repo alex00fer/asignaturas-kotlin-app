@@ -6,7 +6,10 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +24,16 @@ class MainActivity : AppCompatActivity() {
         frameTop = findViewById(R.id.frameTop)
         frameBottom = findViewById(R.id.frameBottom)
 
+        var jsonLoad = JsonLoader()
+        var reader = BufferedReader(InputStreamReader(resources!!.openRawResource(R.raw.datos)))
+        var jsonText = reader.readText()
+        reader.close()
+        //Toast.makeText(this, jsonText, Toast.LENGTH_SHORT).show()
+        jsonLoad.load(jsonText)
+        var datos = jsonLoad.data
+        //Toast.makeText(this, jsonLoad.data.alumnos[0].nombre, Toast.LENGTH_SHORT).show()
+
+
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -30,9 +43,9 @@ class MainActivity : AppCompatActivity() {
         } else {
 
             // In portrait
-            Toast.makeText(this, "PORTRAIT", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "PORTRAIT", Toast.LENGTH_SHORT).show()
 
-            listaAlumnosFragment = ListaAlumnosFragment.newInstance()
+            listaAlumnosFragment = ListaAlumnosFragment.newInstance(datos.alumnos)
             listaAlumnosFragment!!.activityListener = activityListener
 
             val fragmentManager = supportFragmentManager
