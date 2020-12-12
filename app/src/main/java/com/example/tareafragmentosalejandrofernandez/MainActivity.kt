@@ -3,8 +3,7 @@ package com.example.tareafragmentosalejandrofernandez
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
@@ -24,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         frameTop = findViewById(R.id.frameTop)
         frameBottom = findViewById(R.id.frameBottom)
 
+        // JSON
+
         var jsonLoad = JsonLoader()
         var reader = BufferedReader(InputStreamReader(resources!!.openRawResource(R.raw.datos)))
         var jsonText = reader.readText()
@@ -32,6 +33,22 @@ class MainActivity : AppCompatActivity() {
         jsonLoad.load(jsonText)
         var datos = jsonLoad.data
         //Toast.makeText(this, jsonLoad.data.alumnos[0].nombre, Toast.LENGTH_SHORT).show()
+
+
+        // SPINNER
+        var spinner = findViewById<Spinner>(R.id.spinnerAsignatura)
+        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, datos.asignaturas)
+        spinner.adapter = adapterSpinner
+
+        val activityContext = this;
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Toast.makeText(activityContext, "Nothing selected", Toast.LENGTH_LONG).show()
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Toast.makeText(activityContext, spinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
+            }
+        }
 
 
         val orientation = resources.configuration.orientation
