@@ -26,7 +26,7 @@ class AlumnoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val v = inflater.inflate(R.layout.fragment_profesor, container, false)
+        val v = inflater.inflate(R.layout.fragment_alumno, container, false)
 
         textViewNombre = v.findViewById(R.id.textViewNombreAlumno)
         textViewApellido = v.findViewById(R.id.textViewApellidoAlumno)
@@ -41,7 +41,7 @@ class AlumnoFragment : Fragment() {
             textViewApellido!!.text = item.alumno.apellido
             var textAsignaturas = ""
             for (asg in item.asignaturas) {
-                textAsignaturas += asg.asignatura + "\n"
+                textAsignaturas += asg.asignatura + " "
             }
             textViewAsignaturas!!.text = textAsignaturas
         }
@@ -55,6 +55,6 @@ class AlumnoFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            ProfesorFragment().apply {}
+            AlumnoFragment().apply {}
     }
 }

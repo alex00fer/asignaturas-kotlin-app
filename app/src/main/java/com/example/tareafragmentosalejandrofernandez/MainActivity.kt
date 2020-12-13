@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
 import com.example.tareafragmentosalejandrofernandez.database.*
+import com.example.tareafragmentosalejandrofernandez.fragments.AlumnoFragment
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
 import com.example.tareafragmentosalejandrofernandez.fragments.ProfesorFragment
 import java.io.BufferedReader
@@ -18,6 +19,9 @@ class MainActivity : AppCompatActivity() {
     var frameBottom: FrameLayout? = null
     var listaAlumnosFragment: ListaAlumnosFragment? = null
     var profesorFragment: ProfesorFragment? = null
+    var alumnoFragment: AlumnoFragment? = null
+
+    var segundoFragmentActivo: Boolean = false
 
     lateinit var dataRepository: DataRepository
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         listaAlumnosFragment = ListaAlumnosFragment.newInstance(alumnosData as ArrayList<AlumnoConAsignaturas>)
         listaAlumnosFragment!!.activityListener = activityListener
         profesorFragment = ProfesorFragment.newInstance()
+        alumnoFragment = AlumnoFragment.newInstance()
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -119,18 +124,21 @@ class MainActivity : AppCompatActivity() {
     // onclick
     val activityListener = View.OnClickListener {
         Toast.makeText(this, listaAlumnosFragment!!.itemSeleccionado!!.alumno.nombre, Toast.LENGTH_SHORT).show()
-        /*
+
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            val fragmentManager = supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.frameTop, fichaFragment!!)
-            fragmentTransaction.commit()
-            fragmentManager.executePendingTransactions()
-            segundoFragmentActivo = true
+            colocarFragmentAlumnosVertical()
         }
-        fichaFragment!!.updateData(listaFragment!!.itemSeleccionado)
+        alumnoFragment!!.updateData(listaAlumnosFragment!!.itemSeleccionado)
 
-         */
+    }
+
+    private fun colocarFragmentAlumnosVertical() {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frameTop, alumnoFragment!!)
+        fragmentTransaction.commit()
+        fragmentManager.executePendingTransactions()
+        segundoFragmentActivo = true
     }
 }
