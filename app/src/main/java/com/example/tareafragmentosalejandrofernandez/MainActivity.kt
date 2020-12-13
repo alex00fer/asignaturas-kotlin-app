@@ -11,19 +11,29 @@ import com.example.tareafragmentosalejandrofernandez.database.*
 import com.example.tareafragmentosalejandrofernandez.fragments.AlumnoFragment
 import com.example.tareafragmentosalejandrofernandez.fragments.ListaAlumnosFragment
 import com.example.tareafragmentosalejandrofernandez.fragments.ProfesorFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+
 class MainActivity : AppCompatActivity() {
 
+    // Fragmentos
     var frameTop: FrameLayout? = null
     var frameBottom: FrameLayout? = null
+    var spinner: Spinner? = null
     var listaAlumnosFragment: ListaAlumnosFragment? = null
     var profesorFragment: ProfesorFragment? = null
     var alumnoFragment: AlumnoFragment? = null
-
     var segundoFragmentActivo: Boolean = false
-    var profesorCache: Profesor? = null
+
+    // Instace state
+    private val INSTANCE_KEY_ASIGNATURA = "asignaturaValue"
+    var asignaturaCache: String? = null
+    companion object {
+        var profesorCache: Profesor? = null
+        var alumnoCache: AlumnoConAsignaturas? = null
+    }
 
     lateinit var dataRepository: DataRepository
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,20 +78,26 @@ class MainActivity : AppCompatActivity() {
         var alumnosData = dataRepository.getAlumnosConAsignaturas()
 
         // SPINNER
-        var spinner = findViewById<Spinner>(R.id.spinnerAsignatura)
+        spinner = findViewById<Spinner>(R.id.spinnerAsignatura)
         var asignaturas = dataRepository.getAsignaturas()
         val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, asignaturas)
-        spinner.adapter = adapterSpinner
+        spinner!!.adapter = adapterSpinner
 
         val activityContext = this;
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Toast.makeText(activityContext, "Nothing selected", Toast.LENGTH_LONG).show()
             }
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 //Toast.makeText(activityContext, spinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
 
-                val selected = spinner.selectedItem.toString()
+                val selected = spinner!!.selectedItem.toString()
+                asignaturaCache = selected
 
                 var resultProfesor = dataRepository.getProfesor(selected)
                 if (resultProfesor != null &&resultProfesor.size > 0) {
@@ -145,7 +161,11 @@ class MainActivity : AppCompatActivity() {
 
     // onclick
     val activityListener = View.OnClickListener {
-        Toast.makeText(this, listaAlumnosFragment!!.itemSeleccionado!!.alumno.nombre, Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            listaAlumnosFragment!!.itemSeleccionado!!.alumno.nombre,
+            Toast.LENGTH_SHORT
+        ).show()
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -153,6 +173,7 @@ class MainActivity : AppCompatActivity() {
             segundoFragmentActivo = true
         }
         alumnoFragment!!.updateData(listaAlumnosFragment!!.itemSeleccionado)
+        alumnoCache = listaAlumnosFragment!!.itemSeleccionado
 
     }
 
@@ -163,4 +184,31 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
         fragmentManager.executePendingTransactions()
     }
+
+    // Mantener state
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState!!)
+        var asig = savedInstanceState.getString(INSTANCE_KEY_ASIGNATURA).toString()
+        if (asig != null && spinnerAsignatura != null) {
+            spinner!!.setSelection((spinner!!.getAdapter() as ArrayAdapter<String>).getPosition(asig))
+        }
+        if (profesorCache != null && profesorFragment != null) {
+            profesorFragment!!.updateData(profesorCache)
+        }
+        if (alumnoCache != null && alumnoFragment != null) {
+            val orientation = resources.configuration.orientation
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                reemplazarFragmentTop(alumnoFragment!!)
+                segundoFragmentActivo = true
+            }
+            alumnoFragment!!.updateData(alumnoCache)
+        }
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(INSTANCE_KEY_ASIGNATURA, asignaturaCache)
+        super.onSaveInstanceState(outState)
+    }
+
+
 }
