@@ -107,7 +107,12 @@ class MainActivity : AppCompatActivity() {
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
 
-
+            val fragmentManager = supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.frameLandLeft, listaAlumnosFragment!!)
+            fragmentTransaction.replace(R.id.frameLandProfesor, profesorFragment!!)
+            fragmentTransaction.replace(R.id.frameLandAlumno, alumnoFragment!!)
+            fragmentTransaction.commit()
 
         } else {
 
@@ -117,8 +122,8 @@ class MainActivity : AppCompatActivity() {
 
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.frameBottom, listaAlumnosFragment!!)
-            fragmentTransaction.add(R.id.frameTop, profesorFragment!!)
+            fragmentTransaction.replace(R.id.frameBottom, listaAlumnosFragment!!)
+            fragmentTransaction.replace(R.id.frameTop, profesorFragment!!)
             fragmentTransaction.commit()
 
             //Toast.makeText(this, dataRepository.getAlumnos()[0].apellido, Toast.LENGTH_LONG).show()
