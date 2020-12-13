@@ -118,6 +118,7 @@ class MainActivity : AppCompatActivity() {
 
     // onclick
     val activityListener = View.OnClickListener {
+        Toast.makeText(this, listaAlumnosFragment!!.itemSeleccionado!!.alumno.nombre, Toast.LENGTH_SHORT).show()
         /*
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
