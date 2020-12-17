@@ -45,56 +45,24 @@ class MainActivity : AppCompatActivity() {
         frameTop = findViewById(R.id.frameTop)
         frameBottom = findViewById(R.id.frameBottom)
 
-        // JSON
+        popularBaseDeDatos()
 
-        var jsonLoad = JsonLoader()
-        var reader = BufferedReader(InputStreamReader(resources!!.openRawResource(R.raw.datos)))
-        var jsonText = reader.readText()
-        reader.close()
-        //Toast.makeText(this, jsonText, Toast.LENGTH_SHORT).show()
-        jsonLoad.load(jsonText)
-        var datos = jsonLoad.data
-        //Toast.makeText(this, jsonLoad.data.alumnos[0].nombre, Toast.LENGTH_SHORT).show()
-
-
-
-        // POPULATE
-        // insertar alumnos
-        for (al in datos.alumnos) {
-            dataRepository.insert(Alumno(al.codigo, al.nombre, al.apellido))
-            //Toast.makeText(this, al.Asignaturas.size, Toast.LENGTH_LONG).show()
-            for (asignatura in al.Asignaturas)
-                dataRepository.relate(al.codigo, asignatura)
-        }
-        // insertar profesores
-        for (pr in datos.profesores)
-            dataRepository.insert(Profesor(pr.codigo, pr.nombre, pr.apellido, pr.asignatura))
-        // insertar asignaturas
-        for (asignatura in datos.asignaturas)
-            dataRepository.insert(Asignatura(asignatura))
-
-
-        // GET
+        // Get alumnos y asignaturas
         var alumnosData = dataRepository.getAlumnosConAsignaturas()
-
-        // SPINNER
-        spinner = findViewById<Spinner>(R.id.spinnerAsignatura)
         var asignaturas = dataRepository.getAsignaturas()
+
+        // Spinner
+        spinner = findViewById<Spinner>(R.id.spinnerAsignatura)
         val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, asignaturas)
         spinner!!.adapter = adapterSpinner
-
         val activityContext = this;
-        spinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Toast.makeText(activityContext, "Nothing selected", Toast.LENGTH_LONG).show()
             }
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                //Toast.makeText(activityContext, spinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
                 val selected = spinner!!.selectedItem.toString()
                 asignaturaCache = selected
@@ -109,7 +77,6 @@ class MainActivity : AppCompatActivity() {
 
                 var resultAlumnos = dataRepository.getAlumnosConAsignatura(selected)
                 listaAlumnosFragment!!.updateData(resultAlumnos as ArrayList<AlumnoConAsignaturas>)
-
             }
         }
 
@@ -121,8 +88,7 @@ class MainActivity : AppCompatActivity() {
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // In landscape
-
+            // landscape
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.frameLandLeft, listaAlumnosFragment!!)
@@ -131,19 +97,41 @@ class MainActivity : AppCompatActivity() {
             fragmentTransaction.commit()
 
         } else {
-
-            // In portrait
-
-            //Toast.makeText(this, "PORTRAIT", Toast.LENGTH_SHORT).show()
-
+            // portrait
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.frameBottom, listaAlumnosFragment!!)
             fragmentTransaction.replace(R.id.frameTop, profesorFragment!!)
             fragmentTransaction.commit()
 
-            //Toast.makeText(this, dataRepository.getAlumnos()[0].apellido, Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun popularBaseDeDatos() {
+
+        // Cargar JSON
+        var jsonLoad = JsonLoader()
+        var reader = BufferedReader(InputStreamReader(resources!!.openRawResource(R.raw.datos)))
+        var jsonText = reader.readText()
+        reader.close()
+        jsonLoad.load(jsonText)
+        var datos = jsonLoad.data
+
+        // Popular base de datos
+        // insertar alumnos
+        for (al in datos.alumnos) {
+            dataRepository.insert(Alumno(al.codigo, al.nombre, al.apellido))
+            //Toast.makeText(this, al.Asignaturas.size, Toast.LENGTH_LONG).show()
+            for (asignatura in al.Asignaturas)
+                dataRepository.relate(al.codigo, asignatura)
+        }
+        // insertar profesores
+        for (pr in datos.profesores)
+            dataRepository.insert(Profesor(pr.codigo, pr.nombre, pr.apellido, pr.asignatura))
+        // insertar asignaturas
+        for (asignatura in datos.asignaturas)
+            dataRepository.insert(Asignatura(asignatura))
+
     }
 
     override fun onBackPressed() {
@@ -186,7 +174,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Mantener state
-
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState!!)
         var asig = savedInstanceState.getString(INSTANCE_KEY_ASIGNATURA).toString()

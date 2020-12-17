@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tareafragmentosalejandrofernandez.R
 import com.example.tareafragmentosalejandrofernandez.database.AlumnoConAsignaturas
-import com.example.tareafragmentosalejandrofernandez.models.AlumnoData
 
 
 class AlumnoDataAdapter(var items: ArrayList<AlumnoConAsignaturas>, private val listener: (AlumnoConAsignaturas) -> Unit) : RecyclerView.Adapter<AlumnoDataAdapter.ViewHolder>() {
@@ -32,7 +31,7 @@ class AlumnoDataAdapter(var items: ArrayList<AlumnoConAsignaturas>, private val 
     }
 
 
-    //the class is hodling the list view
+    //the class is holding the list view
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val textViewNombre = itemView.findViewById<TextView>(R.id.textViewListItemA)

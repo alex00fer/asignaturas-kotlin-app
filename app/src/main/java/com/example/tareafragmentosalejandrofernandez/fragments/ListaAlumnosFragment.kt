@@ -17,13 +17,8 @@ class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoConAsignaturas>) : Fragm
     var itemSeleccionado: AlumnoConAsignaturas? = null
     var recyclerViewLista: RecyclerView? = null
     var recyclerAdapter: AlumnoDataAdapter? = null
-    //var alumnos: ArrayList<AlumnoConAsignaturas>? = null
 
     constructor() : this(ArrayList<AlumnoConAsignaturas>())
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,12 +29,7 @@ class ListaAlumnosFragment(var alumnos: ArrayList<AlumnoConAsignaturas>) : Fragm
 
         recyclerViewLista = v.findViewById<View>(R.id.recyclerviewListaAlumnos) as RecyclerView
 
-        var items = alumnos!!//ArrayList<AlumnoData>()
-
-        // test data
-        //for (i in 1..20){
-        //    items.add(AlumnoData(i.toString(), i.toString()))
-        //}
+        var items = alumnos!!
 
         recyclerAdapter = AlumnoDataAdapter(items) { item ->
             itemSeleccionado = item

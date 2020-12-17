@@ -6,13 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tareafragmentosalejandrofernandez.R
-import com.example.tareafragmentosalejandrofernandez.adapters.AlumnoDataAdapter
-import com.example.tareafragmentosalejandrofernandez.database.Alumno
 import com.example.tareafragmentosalejandrofernandez.database.AlumnoConAsignaturas
-import com.example.tareafragmentosalejandrofernandez.database.Profesor
 
 class AlumnoFragment : Fragment() {
 
@@ -39,6 +34,7 @@ class AlumnoFragment : Fragment() {
         if (item!=null) {
             textViewNombre!!.text = item.alumno.nombre
             textViewApellido!!.text = item.alumno.apellido
+
             var textAsignaturas = ""
             for (asg in item.asignaturas) {
                 textAsignaturas += asg.asignatura + " "
