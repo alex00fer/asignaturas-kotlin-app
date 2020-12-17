@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.tareafragmentosalejandrofernandez.controller.JsonLoader
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         frameTop = findViewById(R.id.frameTop)
         frameBottom = findViewById(R.id.frameBottom)
 
-        popularBaseDeDatos()
+        popularBaseDeDatos() // rellenar la BBDD con los datos de ejemplo del JSON
 
         // Get alumnos y asignaturas
         var alumnosData = dataRepository.getAlumnosConAsignaturas()
@@ -143,7 +144,12 @@ class MainActivity : AppCompatActivity() {
                 profesorFragment!!.updateData(profesorCache)
         }
         else{
-            super.onBackPressed()
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Salir")
+            builder.setMessage("¿Quieres cerrar la aplicación")
+            builder.setPositiveButton("Sí") { _, _ -> super.onBackPressed() }
+            builder.setNegativeButton("No") { _, _ -> }
+            builder.show()
         }
     }
 
